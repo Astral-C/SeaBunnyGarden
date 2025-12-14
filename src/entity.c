@@ -20,6 +20,7 @@ Entity* NewEntity(){
             return &entities[i];
         }
     }
+    return NULL;
 }
 
 void FreeEntity(Entity* e){
