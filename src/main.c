@@ -25,8 +25,9 @@ int main()
   t3d_init((T3DInitParams){});
   T3DViewport viewport = t3d_viewport_create_buffered(FB_COUNT);
   rdpq_text_register_font(FONT_BUILTIN_DEBUG_MONO, rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO));
+  t3d_fog_set_enabled(1);
 
-  uint8_t colorAmbient[4] = {80, 50, 50, 0xFF};
+  uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 
   world_new();
 
@@ -36,7 +37,7 @@ int main()
     joypad_poll();
     joypad_inputs_t joypad = joypad_get_inputs(JOYPAD_PORT_1);
 
-    t3d_viewport_set_projection(&viewport, T3D_DEG_TO_RAD(65.0f), 10.0f, 300.0f);
+    t3d_viewport_set_projection(&viewport, T3D_DEG_TO_RAD(65.0f), 10.0f, 600.0f);
     t3d_viewport_look_at(&viewport, get_camera_position(), get_camera_target(), &(T3DVec3){{0,1,0}});
 
     // ======== Draw (3D) ======== //
@@ -44,7 +45,7 @@ int main()
     t3d_frame_start();
     t3d_viewport_attach(&viewport);
 
-    rdpq_set_prim_color(RGBA32(0, 0, 0, 0xFF));
+    rdpq_set_prim_color(RGBA32(0x28, 0x32, 0x50, 0xFF));
 
     t3d_screen_clear_color(RGBA32(100, 120, 160, 0xFF));
     t3d_screen_clear_depth();

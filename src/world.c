@@ -12,8 +12,12 @@ void world_update(entity* self){
 entity* world_new(){
     entity* world = entity_new();
     world->update = world_update;
+    world->scale.x = 0.3f;
+    world->scale.y = 0.3f;
+    world->scale.z = 0.3f;
+
     if(world_model == NULL){ // alloc these if we need them and they arent currently loaded
-        T3DModel* m = t3d_model_load("rom:/box.t3dm");
+        T3DModel* m = t3d_model_load("rom:/tidepool.t3dm");
 
         world_model_instance_count++;
 
