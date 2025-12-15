@@ -1,19 +1,19 @@
 #include <libdragon.h>
 #include <t3d/t3d.h>
 #include <t3d/t3dmodel.h>
+#include <entity.h>
+#include <world.h>
+#include <camera.h>
 
 #define FB_COUNT 3
 
-// From tiny3d examples
-float get_time_s()  { return (float)((double)get_ticks_ms() / 1000.0); }
-float get_time_ms() { return (float)((double)get_ticks_us() / 1000.0); }
-
-[[noreturn]]
 int main()
 {
 	debug_init_isviewer();
 	debug_init_usblog();
 	asset_init_compression(2);
+
+  entity_init(100);
 
   dfs_init(DFS_DEFAULT_LOCATION);
 
@@ -26,14 +26,9 @@ int main()
   T3DViewport viewport = t3d_viewport_create_buffered(FB_COUNT);
   rdpq_text_register_font(FONT_BUILTIN_DEBUG_MONO, rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO));
 
+  uint8_t colorAmbient[4] = {80, 50, 50, 0xFF};
 
-  const T3DVec3 camPos = {{100.0f,25.0f,0}};
-  const T3DVec3 camTarget = {{0,0,0}};
-
-  //uint8_t colorAmbient[4] = {80, 50, 50, 0xFF};
-  //T3DVec3 lightDirVec = {{1.0f, 1.0f, 0.0f}};
-  //uint8_t lightDirColor[4] = {120, 120, 120, 0xFF};
-  //t3d_vec3_norm(&lightDirVec);
+  world_new();
 
   for(;;)
   {
@@ -41,8 +36,8 @@ int main()
     joypad_poll();
     joypad_inputs_t joypad = joypad_get_inputs(JOYPAD_PORT_1);
 
-    t3d_viewport_set_projection(&viewport, T3D_DEG_TO_RAD(65.0f), 10.0f, 100.0f);
-    t3d_viewport_look_at(&viewport, &camPos, &camTarget, &(T3DVec3){{0,1,0}});
+    t3d_viewport_set_projection(&viewport, T3D_DEG_TO_RAD(65.0f), 10.0f, 300.0f);
+    t3d_viewport_look_at(&viewport, get_camera_position(), get_camera_target(), &(T3DVec3){{0,1,0}});
 
     // ======== Draw (3D) ======== //
     rdpq_attach(display_get(), display_get_zbuf());
@@ -54,12 +49,17 @@ int main()
     t3d_screen_clear_color(RGBA32(100, 120, 160, 0xFF));
     t3d_screen_clear_depth();
 
-    //t3d_light_set_ambient(colorAmbient);
+    entity_think_all();
+    entity_update_all();
+
+    t3d_light_set_ambient(colorAmbient);
     //t3d_light_set_directional(0, lightDirColor, &lightDirVec);
     //t3d_light_set_count(1);
 
     t3d_matrix_push_pos(1);
     // draw models
+    entity_draw_all();
+
     t3d_matrix_pop(1);
 
     // ======== Draw (2D) ======== //
@@ -67,4 +67,6 @@ int main()
 
     rdpq_detach_show();
   }
+
+  entity_cleanup();
 }

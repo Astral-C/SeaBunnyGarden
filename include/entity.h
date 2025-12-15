@@ -7,27 +7,34 @@
 #include <t3d/t3dmodel.h>
 #include <libdragon.h>
 
-typedef struct Entity_S {
+typedef struct entity_S {
     u8 _inUse;
+    u8 billboard;
+    u8 visible;
+    u8 padding;
     u32 state;
     T3DVec3 position;
     T3DVec3 rotation;
     T3DVec3 scale;
-    struct Entity_S* parent;
-    struct Entity_S* child;
-    T3DModel* model;
-    T3DMat4FP modelMat;
+    struct entity_S* parent;
+    struct entity_S* child;
+    rspq_block_t* model;
+    T3DMat4FP model_mat;
 
-    void (*update)(struct Entity_S*);
-    void (*think)(struct Entity_S*);
-    void (*collide)(struct Entity_S*, struct Entity_S*);
+    void (*update)(struct entity_S*);
+    void (*think)(struct entity_S*);
+    void (*collide)(struct entity_S*, struct entity_S*);
 
-} Entity;
+} entity;
 
-void InitEntities(int);
-void FreeEntities();
+void entity_init(int);
+void entity_cleanup();
 
-Entity* NewEntity();
-void FreeEntity(Entity*);
+entity* entity_new();
+void entity_free(entity*);
+
+void entity_think_all();
+void entity_update_all();
+void entity_draw_all();
 
 #endif
