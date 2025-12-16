@@ -50,6 +50,8 @@ int main()
     t3d_screen_clear_color(RGBA32(0x28, 0x32, 0x50, 0xFF));
     t3d_screen_clear_depth();
 
+    camera_update(&joypad);
+
     entity_think_all();
     entity_update_all();
 
@@ -64,6 +66,8 @@ int main()
     t3d_matrix_pop(1);
 
     // ======== Draw (2D) ======== //
+    camera_debug();
+
     rdpq_sync_pipe();
 
     rdpq_detach_show();

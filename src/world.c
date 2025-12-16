@@ -6,7 +6,7 @@ static rspq_block_t* world_model_dp = NULL;
 static int world_model_instance_count = 0;
 
 void world_update(entity* self){
-    self->rotation.y = fm_fmodf(get_time_s()*0.2f, 6.28318530718f);
+
 }
 
 entity* world_new(){
