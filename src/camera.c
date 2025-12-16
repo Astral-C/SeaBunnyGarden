@@ -1,9 +1,9 @@
 #include <camera.h>
 #include <entity.h>
 
-static T3DVec3 camera_position_max_radial = {{0,50.0f,0}};
-static T3DVec3 camera_position = {{0,50.0f,0}};
-static T3DVec3 camera_target = {{0.0f,0.0f,0}};
+static T3DVec3 camera_position_max_radial = {{0.0f, 50.0f, 0.0f}};
+static T3DVec3 camera_position = {{0.0f, 50.0f, 0.0f}};
+static T3DVec3 camera_target = {{0.0f, 0.0f, 0.0f}};
 static float view_angle = 0.0f;
 static float max_radial_distance = 250.0f;
 static float zoom = 0.1f;
@@ -15,6 +15,9 @@ T3DVec3* get_camera_target() { return &camera_target; }
 
 void camera_set_target(entity* target){
     target_entity = target;
+    if(target == NULL){
+        camera_target =(T3DVec3){{0.0f,0.0f,0.0f}};
+    }
 }
 
 void camera_update(joypad_inputs_t* joypad){
@@ -26,13 +29,15 @@ void camera_update(joypad_inputs_t* joypad){
         camera_target.z = target_entity->position.z;
     }
 
-    camera_position_max_radial.x = camera_target.x + cos(view_angle) * max_radial_distance;
-    camera_position_max_radial.z = camera_target.z + sin(view_angle) * max_radial_distance;
+    if(joypad->stick_x != 0 || target_entity != NULL){
+        camera_position_max_radial.x = camera_target.x + cos(view_angle) * max_radial_distance;
+        camera_position_max_radial.z = camera_target.z + sin(view_angle) * max_radial_distance;
+    }
 
-    float dist = t3d_vec3_distance(&camera_target, &camera_position_max_radial);
-    camera_position.x = ((camera_position_max_radial.x - camera_target.x) * (dist * (zoom * 0.01f)));
-    camera_position.y = ((camera_position_max_radial.y - camera_target.y) * (dist * (zoom * 0.01f)));
-    camera_position.z = ((camera_position_max_radial.z - camera_target.z) * (dist * (zoom * 0.01f)));
+    float dist = t3d_vec3_distance(&camera_target, &camera_position_max_radial) * (zoom * 0.01f);
+    camera_position.x = ((camera_position_max_radial.x - camera_target.x) * dist);
+    camera_position.y = ((camera_position_max_radial.y - camera_target.y) * dist);
+    camera_position.z = ((camera_position_max_radial.z - camera_target.z) * dist);
     
 }
 

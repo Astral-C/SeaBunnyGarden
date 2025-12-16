@@ -3,6 +3,7 @@
 #include <t3d/t3dmodel.h>
 #include <entity.h>
 #include <world.h>
+#include <test.h>
 #include <camera.h>
 
 #define FB_COUNT 3
@@ -25,10 +26,10 @@ int main()
   t3d_init((T3DInitParams){});
   T3DViewport viewport = t3d_viewport_create_buffered(FB_COUNT);
   rdpq_text_register_font(FONT_BUILTIN_DEBUG_MONO, rdpq_font_load_builtin(FONT_BUILTIN_DEBUG_MONO));
-  t3d_fog_set_enabled(1);
 
   uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 
+  entity* cube = cube_new();
   world_new();
 
   for(;;)
@@ -36,6 +37,14 @@ int main()
     // ======== Update ======== //
     joypad_poll();
     joypad_inputs_t joypad = joypad_get_inputs(JOYPAD_PORT_1);
+
+    if(joypad.btn.a){
+      camera_set_target(cube);
+    }
+
+    if(joypad.btn.b){
+      camera_set_target(NULL);
+    }
 
     t3d_viewport_set_projection(&viewport, T3D_DEG_TO_RAD(65.0f), 10.0f, 600.0f);
     t3d_viewport_look_at(&viewport, get_camera_position(), get_camera_target(), &(T3DVec3){{0,1,0}});
@@ -45,7 +54,7 @@ int main()
     t3d_frame_start();
     t3d_viewport_attach(&viewport);
 
-    rdpq_set_prim_color(RGBA32(0x28, 0x32, 0x50, 0xFF));
+    rdpq_set_prim_color(RGBA32(0xFF, 0xFF, 0xFF, 0xFF));
 
     t3d_screen_clear_color(RGBA32(0x28, 0x32, 0x50, 0xFF));
     t3d_screen_clear_depth();

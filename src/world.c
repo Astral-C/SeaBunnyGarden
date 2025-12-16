@@ -29,10 +29,6 @@ entity* world_new(){
     return world;
 }
 
-void free_dp_deferred(void* block){
-    rspq_block_free(block);
-}
-
 void world_free(entity* self){
     world_model_instance_count--;
     if(world_model_instance_count == 0){ // no more instances of this active, delete it all

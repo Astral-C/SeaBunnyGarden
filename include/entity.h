@@ -2,10 +2,10 @@
 #define __entity_H__
 
 #include "defs.h"
+#include <libdragon.h>
 #include <t3d/t3d.h>
 #include <t3d/t3dmath.h>
 #include <t3d/t3dmodel.h>
-#include <libdragon.h>
 
 typedef struct entity_S {
     u8 _inUse;
@@ -13,9 +13,12 @@ typedef struct entity_S {
     u8 visible;
     u8 padding;
     u32 state;
+    u32 health;
     T3DVec3 position;
     T3DVec3 rotation;
     T3DVec3 scale;
+    float direction;
+    float speed;
     struct entity_S* parent;
     struct entity_S* child;
     rspq_block_t* model;
