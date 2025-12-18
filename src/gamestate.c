@@ -1,0 +1,89 @@
+#include <gamestate.h>
+#include <tidepool.h>
+#include <menus.h>
+
+static gamestate* current_state = NULL;
+static gamestate* target_state = NULL;
+
+static bool transitioning_state_exit = false;
+static bool transitioning_state_enter = false;
+static float transition_time_remaining = 0.0f;
+
+struct States GameStates = {
+    .main_menu = {
+        .update = main_menu_update,
+        .enter = main_menu_enter,
+        .exit = main_menu_exit,
+        .transition_enter = NULL,
+        .transition_exit = NULL,
+        .transition_time = 0.0f,
+        .transition_speed = 0.05f,
+        .data = NULL
+    },
+    .main = {
+        .update = tidepool_update,
+        .enter = tidepool_enter,
+        .exit = tidepool_exit,
+        .transition_enter = NULL,
+        .transition_exit = NULL,
+        .transition_time = 0.0f,
+        .transition_speed = 0.05f,
+        .data = NULL
+    }
+};
+
+int in_state_transition() {
+    return transitioning_state_exit + transitioning_state_enter;
+}
+
+void set_initial_sate(gamestate* s){
+    current_state = s;
+    current_state->enter(current_state);
+}
+
+void update_gamestate(){
+    if(transitioning_state_exit){
+        if(transition_time_remaining <= 0.0f){
+            transition_time_remaining = 0.0f;
+            
+            if(current_state->exit) current_state->exit(current_state);
+            
+            current_state = target_state;
+            target_state = NULL;
+
+            if(current_state->enter) current_state->enter(current_state);
+
+            transitioning_state_exit = false;
+            if(current_state->transition_enter != NULL) transitioning_state_enter = true;
+        } else {
+            current_state->transition_exit(current_state);
+            transition_time_remaining -= current_state->transition_speed;
+        }
+    } else if(transitioning_state_enter) {
+        if(transition_time_remaining <= 0.0f){
+            transition_time_remaining = 0.0f;
+
+            transitioning_state_enter = false;
+        } else {
+            current_state->transition_enter(current_state);
+            transition_time_remaining -= current_state->transition_speed;
+        }
+    } else {
+        current_state->update(current_state);
+    }
+}
+
+void switch_gamestate(gamestate* s){
+    if(current_state->transition_exit){
+        transitioning_state_exit = true;
+    } else if(current_state->transition_enter){
+        transitioning_state_enter = true;
+    }
+    
+    if(current_state->transition_exit || current_state->transition_enter) {
+        transition_time_remaining = current_state->transition_time;
+        target_state = s;
+    } else {
+        current_state = s;
+    }
+}

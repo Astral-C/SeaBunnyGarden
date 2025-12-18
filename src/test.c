@@ -31,7 +31,7 @@ entity* cube_new(){
     cube->speed = 0.8f;
 
     if(cube_model == NULL){ // alloc these if we need them and they arent currently loaded
-        cube_model = t3d_model_load("rom:/box.t3dm");
+        cube_model = t3d_model_load("rom:/sb.t3dm");
 
         cube_model_instance_count++;
 
