@@ -162,6 +162,12 @@ void main_menu_draw_3d(gamestate* s){
 
 void main_menu_update(gamestate* s){
     title_screen_world->rotation.y += 0.0005f;
+
+    joypad_inputs_t joypad = joypad_get_inputs(JOYPAD_PORT_1);
+
+    if(joypad.btn.start){
+        switch_gamestate(&GameStates.main);
+    }
     
 }
 
