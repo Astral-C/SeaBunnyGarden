@@ -11,6 +11,8 @@ static float transition_time_remaining = 0.0f;
 
 struct States GameStates = {
     .main_menu = {
+        .draw_2d = main_menu_draw_2d,
+        .draw_3d = main_menu_draw_3d,
         .update = main_menu_update,
         .enter = main_menu_enter,
         .exit = main_menu_exit,
@@ -21,6 +23,8 @@ struct States GameStates = {
         .data = NULL
     },
     .main = {
+        .draw_2d = tidepool_draw_2d,
+        .draw_3d = tidepool_draw_3d,
         .update = tidepool_update,
         .enter = tidepool_enter,
         .exit = tidepool_exit,
@@ -39,6 +43,18 @@ int in_state_transition() {
 void set_initial_sate(gamestate* s){
     current_state = s;
     current_state->enter(current_state);
+}
+
+void cleanup_state(){
+    current_state->exit(current_state);
+}
+
+void draw_gamestate_2d(){
+    current_state->draw_2d(current_state);
+}
+
+void draw_gamestate_3d(){
+    current_state->draw_3d(current_state);
 }
 
 void update_gamestate(){

@@ -59,6 +59,7 @@ entity* entity_new(){
 }
 
 void entity_free(entity* e){
+    if(e == NULL) return;
     e->_inUse = 0;
     e->model = NULL;
 }

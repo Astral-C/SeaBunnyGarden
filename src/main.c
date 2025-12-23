@@ -28,7 +28,7 @@ int main()
 
   uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 
-  set_initial_sate(&GameStates.main);
+  set_initial_sate(&GameStates.main_menu);
 
   for(;;)
   {
@@ -59,11 +59,14 @@ int main()
 
     // draw models
     entity_draw_all();
+    draw_gamestate_3d();
 
     t3d_matrix_pop(1);
 
     // ======== Draw (2D) ======== //
-    camera_debug();
+    rdpq_set_mode_standard();
+    rdpq_mode_alphacompare(1);
+    draw_gamestate_2d();
 
     rdpq_sync_pipe();
 
@@ -71,4 +74,5 @@ int main()
   }
 
   entity_cleanup();
+  cleanup_state();
 }
