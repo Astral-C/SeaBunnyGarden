@@ -7,7 +7,7 @@
 #include <t3d/t3dmath.h>
 #include <t3d/t3dmodel.h>
 
-typedef struct entity_S {
+typedef struct entity {
     u8 _inUse;
     u8 billboard;
     u8 visible;
@@ -19,14 +19,14 @@ typedef struct entity_S {
     T3DVec3 scale;
     float direction;
     float speed;
-    struct entity_S* parent;
-    struct entity_S* child;
+    struct entity* parent;
+    struct entity* child;
     rspq_block_t* model;
     T3DMat4FP model_mat;
 
-    void (*update)(struct entity_S*);
-    void (*think)(struct entity_S*);
-    void (*collide)(struct entity_S*, struct entity_S*);
+    void (*update)(struct entity*);
+    void (*think)(struct entity*);
+    void (*collide)(struct entity*, struct entity*);
 
 } entity;
 

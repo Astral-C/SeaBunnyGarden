@@ -14,13 +14,13 @@ enum menu_item_type {
     TEXT
 };
 
-typedef union menu_item_data_U {
+typedef union menu_item_data {
     const char* text;
     sprite_t* img;
     float thickness; // At least it's 32bit!
 } menu_item_data;
 
-typedef struct menu_item_S {
+typedef struct menu_item {
     uint8_t in_use;
     uint8_t selectable;
     uint8_t priority;
@@ -30,7 +30,7 @@ typedef struct menu_item_S {
     menu_item_data data;
 } menu_item;
 
-typedef struct menu_S {
+typedef struct menu {
     int _item_count;
     menu_item* items;
 } menu;
