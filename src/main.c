@@ -4,6 +4,7 @@
 #include <entity.h>
 #include <camera.h>
 #include <gamestate.h>
+#include <seaBun.h>
 
 #define FB_COUNT 3
 
@@ -14,6 +15,7 @@ int main()
 	asset_init_compression(2);
 
   entity_init(100);
+  SeaBun_init(10);
 
   dfs_init(DFS_DEFAULT_LOCATION);
 
