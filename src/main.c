@@ -30,7 +30,7 @@ int main()
 
   uint8_t colorAmbient[4] = {0xAA, 0xAA, 0xAA, 0xFF};
 
-  set_initial_sate(&GameStates.main_menu);
+  set_initial_state(&GameStates.main_menu);
 
   for(;;)
   {

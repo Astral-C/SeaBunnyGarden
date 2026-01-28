@@ -1,6 +1,7 @@
 #include <menus.h>
 #include <entity.h>
 #include <world.h>
+#include <test.h>
 
 void menu_init(menu* m, int max_items){
     m->_item_count = max_items;
@@ -173,5 +174,5 @@ void main_menu_update(gamestate* s){
 
 void main_menu_exit(gamestate* s){
     entity_free(title_screen_world);
-    menu_free(&main_menu);
+    menu_free(&main_menu);   
 }

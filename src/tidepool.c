@@ -8,8 +8,9 @@ entity* cube = NULL;
 entity* world = NULL;
 
 void tidepool_enter(gamestate* state){
-    //cube = cube_new();
-    world = world_new();
+    //world_new();
+    cube = cube_new();
+    
 }
 
 void tidepool_draw_2d(gamestate* s){
@@ -24,7 +25,7 @@ void tidepool_update(gamestate* state){
     joypad_inputs_t joypad = joypad_get_inputs(JOYPAD_PORT_1);
 
     if(joypad.btn.a){
-      camera_set_target(cube);
+      //camera_set_target(cube);
     }
 
     if(joypad.btn.b){
@@ -36,6 +37,6 @@ void tidepool_update(gamestate* state){
 
 void tidepool_exit(gamestate* state){
     // cleanup assets
-    //entity_free(cube);
+    entity_free(cube);
     entity_free(world);
 }

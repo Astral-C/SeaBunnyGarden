@@ -17,12 +17,13 @@ typedef struct state_S {
 struct States {
     gamestate main_menu;
     gamestate main;
+    gamestate garden;
 };
 
 extern struct States GameStates;
 
 int in_state_transition();
-void set_initial_sate(gamestate* s);
+void set_initial_state(gamestate* s);
 void cleanup_state();
 void update_gamestate();
 void draw_gamestate_3d();
