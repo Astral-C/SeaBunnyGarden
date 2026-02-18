@@ -6,7 +6,7 @@ include $(T3D_INST)/t3d.mk
 
 N64_CFLAGS += -std=gnu2x -Os -Iinclude -Wincompatible-pointer-types
 
-src = src/util.c src/camera.c src/test.c src/world.c src/gamestate.c src/menu.c src/tidepool.c src/seaBun.c src/entity.c src/main.c
+src = src/util.c src/camera.c src/test.c src/world.c src/gamestate.c src/menu.c src/tidepool.c src/seaBun.c src/entity.c src/main.c src/garden.c
 
 assets_png = $(wildcard assets/*.png)
 assets_gltf = $(wildcard assets/*.glb)

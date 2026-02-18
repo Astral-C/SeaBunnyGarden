@@ -8,6 +8,7 @@
 #include <gamestate.h>
 
 enum menu_item_type {
+    NONE,
     IMAGE,
     RECT,
     RECT_UNFILLED,

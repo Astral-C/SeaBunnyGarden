@@ -40,17 +40,7 @@ struct States GameStates = {
         .data = NULL
     },
     .garden = {
-        .draw_2d = tidepool_draw_2d,
-        .draw_3d = tidepool_draw_3d,
-        .update = tidepool_update,
-        .enter = tidepool_enter,
-        .exit = tidepool_exit,
-        .transition_enter = test_enter,
-        .transition_exit = test_exit,
-        .transition_time = 0.0f,
-        .transition_speed = 0.05f,
-        .data = NULL
-        /*.draw_2d = garden_draw_2d,
+        .draw_2d = garden_draw_2d,
         .draw_3d = garden_draw_3d,
         .update = garden_update,
         .enter = garden_enter,
@@ -59,7 +49,7 @@ struct States GameStates = {
         .transition_exit = test_exit,
         .transition_time = 0.0f,
         .transition_speed = 0.05f,
-        .data = NULL*/
+        .data = NULL
     }
 };
 

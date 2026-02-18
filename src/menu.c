@@ -6,6 +6,7 @@
 void menu_init(menu* m, int max_items){
     m->_item_count = max_items;
     m->items = malloc_uncached(sizeof(menu_item)*max_items);
+    memset(m->items, 0, sizeof(menu_item)*max_items);
 }
 
 void menu_item_set_priority(menu_item* m, int priority){
@@ -107,6 +108,7 @@ void menu_draw(menu* m){
                 rdpq_set_mode_standard();
                 break;
             case IMAGE:
+                if (item->data.img == NULL)break;
                 rdpq_sprite_blit(item->data.img, item->x, item->y, &(rdpq_blitparms_t){
                     .scale_x = item->sx,
                     .scale_y = item->sy
@@ -120,10 +122,12 @@ void menu_draw(menu* m){
 }
 
 void menu_free(menu* m){
-    for(menu_item* item = m->items; item < m->items + m->_item_count; item++){
-        if(item->type == IMAGE) sprite_free(item->data.img);
+    for (menu_item* item = m->items; item < m->items + m->_item_count; item++) {
+        if (item->type == IMAGE) sprite_free(item->data.img);
     }
+    memset(m->items, 0, sizeof(menu_item) * m->_item_count);
     free_uncached(m->items);
+    m->_item_count = 0;
 }
 
 ////////
@@ -142,7 +146,7 @@ void main_menu_enter(gamestate* s){
     frame->color = RGBA32(0x33, 0x33, 0xff, 0xff);
 
     menu_add_text(&main_menu, "Test Text", 50, 50);
-    
+
     menu_item* press_start = menu_add_image(&main_menu, "rom:/press_start.sprite");
     press_start->x = display_get_width() / 2 - 16;
     press_start->y = display_get_height() / 2 + 55;
@@ -167,7 +171,7 @@ void main_menu_update(gamestate* s){
     joypad_inputs_t joypad = joypad_get_inputs(JOYPAD_PORT_1);
 
     if(joypad.btn.start){
-        switch_gamestate(&GameStates.main);
+        switch_gamestate(&GameStates.garden);
     }
     
 }
